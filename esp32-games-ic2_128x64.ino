@@ -7,6 +7,7 @@
 #include "util.hpp"
 #include "scenes.hpp"
 #include "game_scenes.hpp"
+#include "rockpaperscissors_multi.hpp"
 #include <time.h>
 
 // Declaration for SSD1306 display connected using I2C
@@ -34,7 +35,7 @@ int get_current_button()
 }
 
 void setup() {
-  Serial.begin(115200);
+  //Serial.begin(115200);
   srand(time(NULL));
 
   // initialize the OLED object
@@ -56,7 +57,7 @@ void loop() {
   switch (currentButton)
   {
     case LRED_BUTTON_PIN: if (selectedGame > GAME_NONE) --selectedGame; break; 
-    case RRED_BUTTON_PIN: if (selectedGame < GAME_CREDITS) ++selectedGame; break;
+    case RRED_BUTTON_PIN: if (selectedGame <= GAME_CREDITS) ++selectedGame; break;
   }
 
   load_scene(currentScene);
@@ -65,17 +66,20 @@ void loop() {
     delay(200);
     switch (selectedGame)
     {
-      case GAME_NONE:
       case GAME_RPS:
         currentScene = SCENE_NONE;
         rps_play_game();
+        break;
+      case GAME_MULTI_RPS:
+        currentScene = SCENE_NONE;
+        rps_multi_play_game();
         break;
       default:;
     }
   }
 
   lastButton = currentButton;
-  delay(100);
+  delay(50);
 }
 
 // vim:shiftwidth=2

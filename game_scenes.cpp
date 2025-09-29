@@ -1,7 +1,7 @@
 #include "game_scenes.hpp"
 #include "util.hpp"
 
-void load_rps_scene_game()
+void load_scene_game_rps()
 {
     display.clearDisplay();
     display.setTextSize(1);
@@ -25,7 +25,31 @@ void load_rps_scene_game()
     display.display();
 }
 
-void load_credits_scene_game()
+void load_scene_game_mutirps()
+{
+    display.clearDisplay();
+    display.setTextSize(1);
+    display.setTextColor(WHITE);
+
+    display.setCursor(6, 4);
+    display.print("Rock Paper Scissors");
+
+    display.setCursor(20, 16);
+    display.print("(Multi-player)");
+
+    display.setCursor(0, 34);
+    display.print('<');
+
+    display.setCursor((SCREEN_WIDTH-50)/2, 34);
+    display.print("Multi-RPS");
+
+    display.setCursor(SCREEN_WIDTH-10, 34);
+    display.print('>');
+
+    display.display();
+}
+
+void load_scene_game_credits()
 {
     display.clearDisplay();
     display.setTextSize(1);
@@ -51,8 +75,9 @@ void load_scene_game(int game)
     switch (game)
     {
         case GAME_NONE:
-        case GAME_RPS: load_rps_scene_game(); break;
-        case GAME_CREDITS: load_credits_scene_game(); break;
+        case GAME_RPS: load_scene_game_rps(); break;
+        case GAME_MULTI_RPS: load_scene_game_mutirps(); break;
+        case GAME_CREDITS: load_scene_game_credits(); break;
     }
 }
 

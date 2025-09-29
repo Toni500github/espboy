@@ -1,6 +1,20 @@
 #include "rockpaperscissors.hpp"
 #include "util.hpp"
 
+enum Winner {
+    CPU = 0,
+    DRAW,
+    PLAYER
+};
+
+enum Moves {
+    NONE = 10,
+    ROCK,
+    PAPER,
+    SCISSORS,
+    DONE
+};
+
 static void print_count_down(uint8_t n)
 {
     display.clearDisplay();
@@ -34,7 +48,7 @@ static Moves get_cpu_move()
     }
 }
 
-void print_winner(Winner winner)
+static void print_winner(Winner winner)
 {
     display.clearDisplay();
     display.setCursor(15, 28);
@@ -49,7 +63,7 @@ void print_winner(Winner winner)
     delay(1500);
 }
 
-Winner calculate_winner(Moves computer_move, Moves player_move)
+static Winner calculate_winner(Moves computer_move, Moves player_move)
 {
     if (computer_move == player_move)
         return DRAW;
@@ -63,7 +77,7 @@ Winner calculate_winner(Moves computer_move, Moves player_move)
         return PLAYER;
 }
 
-void print_player_moves(Moves player_move)
+static void print_player_moves(Moves player_move)
 {
     display.clearDisplay();
     display.setCursor(0, 28);
@@ -76,7 +90,7 @@ void print_player_moves(Moves player_move)
     display.display();
 }
 
-void print_moves(Moves computer_move, Moves player_move)
+static void print_moves(Moves computer_move, Moves player_move)
 {
     display.clearDisplay();
     display.setCursor(6, 12);

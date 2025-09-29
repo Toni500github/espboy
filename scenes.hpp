@@ -10,6 +10,7 @@ enum Scenes {
 enum SelectedGame {
     GAME_NONE = 0,
     GAME_RPS,
+    GAME_MULTI_RPS,
     GAME_CREDITS,
 };
 
