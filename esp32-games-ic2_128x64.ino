@@ -4,27 +4,37 @@
 #include <Adafruit_SSD1306.h>
 #include <Fonts/FreeSans9pt7b.h>
 #include "rockpaperscissors.hpp"
+#include "util.hpp"
+#include "scenes.hpp"
+#include "game_scenes.hpp"
 #include <time.h>
-
-#define SCREEN_WIDTH 128  // OLED display width, in pixels
-#define SCREEN_HEIGHT 64  // OLED display height, in pixels
 
 // Declaration for SSD1306 display connected using I2C
 #define SCREEN_ADDRESS 0x3C
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-enum {
- LRED_BUTTON_PIN = 19,
- LWHITE_BUTTON_PIN = 18,
- RRED_BUTTON_PIN = 26,
- RBLUE_BUTTON_PIN = 25,
-};
+static int currentButton = 0;
+static int lastButton = 0;
 
-Moves currentButton = NONE;
-Moves lastButton = NONE;
+int get_current_button()
+{
+  if (digitalRead(LWHITE_BUTTON_PIN) == LOW)
+    return LWHITE_BUTTON_PIN;
+
+  if (digitalRead(LRED_BUTTON_PIN) == LOW)
+    return LRED_BUTTON_PIN;
+
+  if (digitalRead(RRED_BUTTON_PIN) == LOW)
+    return RRED_BUTTON_PIN;
+
+  if (digitalRead(RBLUE_BUTTON_PIN) == LOW)
+    return RBLUE_BUTTON_PIN;
+
+  return -1;
+}
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   srand(time(NULL));
 
   // initialize the OLED object
@@ -34,39 +44,37 @@ void setup() {
       ;  // Don't proceed, loop forever
   }
 
-  // Clear the buffer.
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
   pinMode(LRED_BUTTON_PIN, INPUT_PULLUP);
   pinMode(LWHITE_BUTTON_PIN, INPUT_PULLUP);
   pinMode(RRED_BUTTON_PIN, INPUT_PULLUP);
   pinMode(RBLUE_BUTTON_PIN, INPUT_PULLUP);
-  print_player_moves(NONE);
 }
 
 void loop() {
   display.clearDisplay();
-  if (digitalRead(LWHITE_BUTTON_PIN) == LOW)
-    currentButton = ROCK;
-  else if (digitalRead(LRED_BUTTON_PIN) == LOW)
-    currentButton = PAPER;
-  else if (digitalRead(RRED_BUTTON_PIN) == LOW)
-    currentButton = SCISSORS;
-  else if (digitalRead(RBLUE_BUTTON_PIN) == LOW)
-    currentButton = DONE;
-  
-  if (currentButton != DONE)
-    print_player_moves(currentButton);
-  else if (currentButton == DONE && lastButton != NONE)
+  currentButton = get_current_button();
+  switch (currentButton)
   {
-    play(lastButton);
-    lastButton = currentButton = NONE;
-    return;
+    case LRED_BUTTON_PIN: if (selectedGame > GAME_NONE) --selectedGame; break; 
+    case RRED_BUTTON_PIN: if (selectedGame < GAME_CREDITS) ++selectedGame; break;
+  }
+
+  load_scene(currentScene);
+  if (currentButton == RBLUE_BUTTON_PIN)
+  {
+    delay(200);
+    switch (selectedGame)
+    {
+      case GAME_NONE:
+      case GAME_RPS:
+        currentScene = SCENE_NONE;
+        rps_play_game();
+        break;
+      default:;
+    }
   }
 
   lastButton = currentButton;
-  display.display();
   delay(100);
 }
 

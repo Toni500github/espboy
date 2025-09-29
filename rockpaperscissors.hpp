@@ -1,6 +1,5 @@
-#include <Adafruit_SSD1306.h>
-
-extern Adafruit_SSD1306 display;
+#ifndef ROCKPAPERSCISSORSROCKPAPERSCISSORS_HPP
+#define ROCKPAPERSCISSORSROCKPAPERSCISSORS_HPP
 
 enum Winner {
     CPU = 0,
@@ -16,7 +15,6 @@ enum Moves {
     DONE
 };
 
-void print_winner(Winner winner);
-void print_player_moves(Moves player_move);
-Winner calculate_winner(Moves computer_move, Moves player_move);
-Winner play(Moves player_move);
+void rps_play_game();
+
+#endif

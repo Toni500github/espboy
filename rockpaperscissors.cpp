@@ -1,5 +1,5 @@
 #include "rockpaperscissors.hpp"
-#include "esp32-hal.h"
+#include "util.hpp"
 
 static void print_count_down(uint8_t n)
 {
@@ -37,12 +37,12 @@ static Moves get_cpu_move()
 void print_winner(Winner winner)
 {
     display.clearDisplay();
-    display.setCursor(18, 28);
+    display.setCursor(15, 28);
     display.setTextSize(2);
     switch (winner)
     {
         case CPU: display.println("CPU Wins"); break;
-        case DRAW: display.setCursor(55, 28); display.println("Draw!"); break;
+        case DRAW: display.setCursor(35, 28); display.println("Draw!"); break;
         case PLAYER: display.println("You Win!"); break;
     }
     display.display();
@@ -101,8 +101,33 @@ void print_moves(Moves computer_move, Moves player_move)
     delay(1500);
 }
 
-Winner play(Moves player_move)
+static int currentButton = NONE;
+static int lastButton = NONE;
+
+void rps_play_game()
 {
+    Moves player_move = NONE;
+
+    while (true)
+    {
+        currentButton = get_current_button();
+        if (currentButton != RBLUE_BUTTON_PIN)
+        {
+            switch (currentButton)
+            {
+                case LWHITE_BUTTON_PIN: player_move = ROCK; break;
+                case LRED_BUTTON_PIN: player_move = PAPER; break;
+                case RRED_BUTTON_PIN: player_move = SCISSORS; break;
+            }
+        }
+        else if (currentButton == RBLUE_BUTTON_PIN && player_move != NONE)
+        {
+            break;
+        }
+        print_player_moves(player_move);
+        lastButton = currentButton;
+    }
+
     Moves computer_move = get_cpu_move();
     print_count_down(3);
     print_count_down(2);
@@ -110,6 +135,6 @@ Winner play(Moves player_move)
     Winner winner = calculate_winner(computer_move, player_move);
     print_moves(computer_move, player_move);
     print_winner(winner);
-    delay(2000);
-    return winner;
+    lastButton = currentButton = NONE;
+    rps_play_game();
 }
