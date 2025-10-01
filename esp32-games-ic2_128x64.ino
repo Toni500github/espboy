@@ -2,12 +2,8 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <Fonts/FreeSans9pt7b.h>
-#include "rockpaperscissors.hpp"
 #include "util.hpp"
 #include "scenes.hpp"
-#include "game_scenes.hpp"
-#include "rockpaperscissors_multi.hpp"
 #include <time.h>
 
 // Declaration for SSD1306 display connected using I2C
@@ -16,6 +12,13 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 static int currentButton = 0;
 static int lastButton = 0;
+
+static int choice = SCENE_MAIN_MENU_SINGLEP;
+static int min_choice = SCENE_MAIN_MENU_SINGLEP;
+static int max_choice = SCENE_MAIN_MENU_CREDITS;
+
+void play_singlep_rps();
+void play_multip_rps();
 
 int get_current_button()
 {
@@ -32,6 +35,19 @@ int get_current_button()
     return RBLUE_BUTTON_PIN;
 
   return -1;
+}
+
+void centerText(const char* text, int y)
+{
+  int16_t x1, y1;
+  uint16_t w, h;
+  
+  display.getTextBounds(text, 0, 0, &x1, &y1, &w, &h);
+
+  int x = (128 - w) / 2;
+  
+  display.setCursor(x, y);
+  display.print(text);
 }
 
 void setup() {
@@ -54,25 +70,55 @@ void setup() {
 void loop() {
   display.clearDisplay();
   currentButton = get_current_button();
+
   switch (currentButton)
   {
-    case LRED_BUTTON_PIN: if (selectedGame > GAME_NONE) --selectedGame; break; 
-    case RRED_BUTTON_PIN: if (selectedGame <= GAME_CREDITS) ++selectedGame; break;
+    case LRED_BUTTON_PIN: if (choice > min_choice) --choice; delay(130); break;
+    case RRED_BUTTON_PIN: if (choice < max_choice) ++choice; delay(130); break;
   }
 
-  load_scene(currentScene);
+  load_scene(currentScene, choice);
   if (currentButton == RBLUE_BUTTON_PIN)
   {
-    delay(200);
-    switch (selectedGame)
+    delay(50);
+    switch (currentScene)
     {
-      case GAME_RPS:
-        currentScene = SCENE_NONE;
-        rps_play_game();
+      case SCENE_MAIN_MENU:
+        switch (choice)
+        {
+          case SCENE_MAIN_MENU_SINGLEP:
+            currentScene = SCENE_SINGLEP_GAMES;
+            choice = GAME_SINGLEP_RPS;
+            min_choice = GAME_SINGLEP_RPS;
+            max_choice = GAME_SINGLEP_RPS;
+            break;
+          case SCENE_MAIN_MENU_MULTIP:
+            currentScene = SCENE_MULTIP_GAMES;
+            choice = GAME_MULTIP_RPS;
+            min_choice = GAME_MULTIP_RPS;
+            max_choice = GAME_MULTIP_RPS;
+            break;
+          case SCENE_MAIN_MENU_CREDITS: currentScene = SCENE_CREDITS;
+          default: choice = min_choice = max_choice = -67; // ahahahah...
+        }
         break;
-      case GAME_MULTI_RPS:
-        currentScene = SCENE_NONE;
-        rps_multi_play_game();
+      case SCENE_SINGLEP_GAMES:
+        switch (choice)
+        {
+          case GAME_SINGLEP_RPS:
+            currentScene = SCENE_NONE;
+            play_singlep_rps();
+            break;
+        }
+        break;
+      case SCENE_MULTIP_GAMES:
+        switch (choice)
+        {
+          case GAME_MULTIP_RPS:
+            currentScene = SCENE_NONE;
+            play_multip_rps();
+            break;
+        }
         break;
       default:;
     }

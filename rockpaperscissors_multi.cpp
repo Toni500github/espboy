@@ -1,4 +1,3 @@
-#include "rockpaperscissors_multi.hpp"
 #include "util.hpp"
 
 enum Winner {
@@ -19,8 +18,9 @@ static void print_count_down(uint8_t n)
 {
     display.clearDisplay();
     display.setTextSize(3);
-    display.setCursor(55, 28);
-    display.print(n);
+    char str[16];
+    sprintf(str, "%hu", n);
+    centerText(str, 28);
     display.display();
     delay(850);
 }
@@ -39,13 +39,12 @@ static char get_move_char(Moves whos_move)
 static void print_winner(Winner winner)
 {
     display.clearDisplay();
-    display.setCursor(15, 28);
     display.setTextSize(1);
     switch (winner)
     {
-        case PLAYER1: display.println("Player1 Wins!"); break;
-        case DRAW: display.setCursor(35, 28); display.println("Draw!"); break;
-        case PLAYER2: display.println("Player2 Win!"); break;
+        case PLAYER1: centerText("Player1 Wins!", 28); break;
+        case DRAW: centerText("Draw!", 28); break;
+        case PLAYER2: centerText("Player2 Win!", 28); break;
     }
     display.display();
     delay(1500);
@@ -74,7 +73,7 @@ static void print_player_moves(bool is_player1, Moves player_move)
         display.print("Player1 move: ");
     else
         display.print("Player2 move: ");
-    display.setCursor(88, 25);
+    display.setCursor(90, 25);
     display.setTextSize(2);
     display.print(get_move_char(player_move));
 
@@ -95,8 +94,7 @@ static void print_moves(Moves player1_move, Moves player2_move)
     display.print(get_move_char(player1_move));
 
     display.setTextSize(1);
-    display.setCursor(55, 28);
-    display.print("VS");
+    centerText("VS", 28);
 
     display.setCursor(110, 28);
     display.setTextSize(2);
@@ -109,7 +107,7 @@ static void print_moves(Moves player1_move, Moves player2_move)
 static int currentButton = NONE;
 static int lastButton = NONE;
 
-void rps_multi_play_game()
+void play_multip_rps()
 {
     Moves player1_move = NONE, player2_move = NONE;
 
@@ -162,5 +160,5 @@ void rps_multi_play_game()
     print_moves(player1_move, player2_move);
     print_winner(winner);
     lastButton = currentButton = NONE;
-    rps_multi_play_game();
+    play_multip_rps();
 }

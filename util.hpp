@@ -17,5 +17,6 @@ enum {
 };
 
 int get_current_button();
+void centerText(const char* text, int y);
 
 #endif

@@ -3,15 +3,33 @@
 
 enum Scenes {
     SCENE_NONE = 0,
-    SCENE_MAINMENU,
-    SCENE_OPTIONS,
+    SCENE_MAIN_MENU,
+    SCENE_SINGLEP_GAMES,
+    SCENE_MULTIP_GAMES,
+    SCENE_CREDITS,
 };
 
-enum SelectedGame {
-    GAME_NONE = 0,
-    GAME_RPS,
-    GAME_MULTI_RPS,
-    GAME_CREDITS,
+enum ScenesMainMenu {
+    SCENE_MAIN_MENU_NONE = 10,
+    SCENE_MAIN_MENU_SINGLEP,
+    SCENE_MAIN_MENU_MULTIP,
+    SCENE_MAIN_MENU_CREDITS,
 };
+
+enum selectedSinglePGame {
+    GAME_SINGLEP_NONE = 20,
+    GAME_SINGLEP_RPS,
+};
+
+enum selectedMultiPGame {
+    GAME_MULTIP_NONE = 300,
+    GAME_MULTIP_RPS,
+};
+
+inline int currentScene = SCENE_MAIN_MENU;
+
+void load_scene(int scene, int game);
+void load_scene_main_menu(int choice);
+void load_scene_game_credits();
 
 #endif

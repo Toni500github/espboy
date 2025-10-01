@@ -1,4 +1,3 @@
-#include "rockpaperscissors.hpp"
 #include "util.hpp"
 
 enum Winner {
@@ -19,8 +18,9 @@ static void print_count_down(uint8_t n)
 {
     display.clearDisplay();
     display.setTextSize(3);
-    display.setCursor(55, 28);
-    display.print(n);
+    char str[16];
+    sprintf(str, "%hu", n);
+    centerText(str, 28);
     display.display();
     delay(850);
 }
@@ -51,13 +51,12 @@ static Moves get_cpu_move()
 static void print_winner(Winner winner)
 {
     display.clearDisplay();
-    display.setCursor(15, 28);
     display.setTextSize(2);
     switch (winner)
     {
-        case CPU: display.println("CPU Wins"); break;
-        case DRAW: display.setCursor(35, 28); display.println("Draw!"); break;
-        case PLAYER: display.println("You Win!"); break;
+        case CPU: centerText("CPU Wins", 28); break;
+        case DRAW: centerText("Draw!", 28); break;
+        case PLAYER: centerText("You Win!", 28); break;
     }
     display.display();
     delay(1500);
@@ -104,8 +103,7 @@ static void print_moves(Moves computer_move, Moves player_move)
     display.print(get_move_char(player_move));
 
     display.setTextSize(1);
-    display.setCursor(55, 28);
-    display.print("VS");
+    centerText("VS", 28);
 
     display.setCursor(110, 28);
     display.setTextSize(2);
@@ -118,7 +116,7 @@ static void print_moves(Moves computer_move, Moves player_move)
 static int currentButton = NONE;
 static int lastButton = NONE;
 
-void rps_play_game()
+void play_singlep_rps()
 {
     Moves player_move = NONE;
 
@@ -150,5 +148,5 @@ void rps_play_game()
     print_moves(computer_move, player_move);
     print_winner(winner);
     lastButton = currentButton = NONE;
-    rps_play_game();
+    play_singlep_rps();
 }
