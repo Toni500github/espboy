@@ -1,12 +1,14 @@
 #include "util.hpp"
 
-enum Winner {
+enum Winner
+{
     CPU = 0,
     DRAW,
     PLAYER
 };
 
-enum Moves {
+enum Moves
+{
     NONE = 10,
     ROCK,
     PAPER,
@@ -29,22 +31,22 @@ static char get_move_char(Moves whos_move)
 {
     switch (whos_move)
     {
-        case ROCK: return 'R';
-        case PAPER: return 'P';
-        case SCISSORS: return 'S';
+        case ROCK:     return 'S';
+        case PAPER:    return 'C';
+        case SCISSORS: return 'F';
     }
     return ' ';
 }
 
 static Moves get_cpu_move()
 {
-    int random = rand() % 3; // 0, 1, or 2
-    switch(random)
+    int random = rand() % 3;  // 0, 1, or 2
+    switch (random)
     {
-        case 0: return ROCK;
-        case 1: return PAPER;
-        case 2: return SCISSORS;
-        default: return ROCK; // fallback
+        case 0:  return ROCK;
+        case 1:  return PAPER;
+        case 2:  return SCISSORS;
+        default: return ROCK;  // fallback
     }
 }
 
@@ -54,8 +56,8 @@ static void print_winner(Winner winner)
     display.setTextSize(2);
     switch (winner)
     {
-        case CPU: centerText("CPU Wins", 28); break;
-        case DRAW: centerText("Draw!", 28); break;
+        case CPU:    centerText("CPU Wins", 28); break;
+        case DRAW:   centerText("Draw!", 28); break;
         case PLAYER: centerText("You Win!", 28); break;
     }
     display.display();
@@ -72,7 +74,7 @@ static Winner calculate_winner(Moves computer_move, Moves player_move)
              (computer_move == PAPER && player_move == ROCK))
         return CPU;
 
-    else 
+    else
         return PLAYER;
 }
 
@@ -114,7 +116,7 @@ static void print_moves(Moves computer_move, Moves player_move)
 }
 
 static int currentButton = NONE;
-static int lastButton = NONE;
+static int lastButton    = NONE;
 
 void play_singlep_rps()
 {
@@ -128,8 +130,8 @@ void play_singlep_rps()
             switch (currentButton)
             {
                 case LWHITE_BUTTON_PIN: player_move = ROCK; break;
-                case LRED_BUTTON_PIN: player_move = PAPER; break;
-                case RRED_BUTTON_PIN: player_move = SCISSORS; break;
+                case LRED_BUTTON_PIN:   player_move = PAPER; break;
+                case RRED_BUTTON_PIN:   player_move = SCISSORS; break;
             }
         }
         else if (currentButton == RBLUE_BUTTON_PIN && player_move != NONE)

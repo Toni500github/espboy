@@ -1,17 +1,16 @@
-#include <SPI.h>
-#include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include "util.hpp"
-#include "scenes.hpp"
 #include <time.h>
+
+#include "scenes.hpp"
+#include "util.hpp"
 
 // Declaration for SSD1306 display connected using I2C
 #define SCREEN_ADDRESS 0x3C
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 static int currentButton = 0;
-static int lastButton = 0;
+static int lastButton    = 0;
 
 static int choice = SCENE_MAIN_MENU_SINGLEP;
 static int min_choice = SCENE_MAIN_MENU_SINGLEP;
@@ -19,6 +18,7 @@ static int max_choice = SCENE_MAIN_MENU_CREDITS;
 
 void play_singlep_rps();
 void play_multip_rps();
+void play_multip_ping_pong();
 
 int get_current_button()
 {
@@ -55,10 +55,11 @@ void setup() {
   srand(time(NULL));
 
   // initialize the OLED object
-  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
-    Serial.println(F("SSD1306 allocation failed"));
-    for (;;)
-      ;  // Don't proceed, loop forever
+  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS))
+  {
+      Serial.println(F("SSD1306 allocation failed"));
+      for (;;)
+          ;  // Don't proceed, loop forever
   }
 
   pinMode(LRED_BUTTON_PIN, INPUT_PULLUP);
@@ -67,7 +68,8 @@ void setup() {
   pinMode(RBLUE_BUTTON_PIN, INPUT_PULLUP);
 }
 
-void loop() {
+void loop()
+{
   display.clearDisplay();
   currentButton = get_current_button();
 
@@ -96,7 +98,7 @@ void loop() {
             currentScene = SCENE_MULTIP_GAMES;
             choice = GAME_MULTIP_RPS;
             min_choice = GAME_MULTIP_RPS;
-            max_choice = GAME_MULTIP_RPS;
+            max_choice = GAME_MULTIP_PING_PONG;
             break;
           case SCENE_MAIN_MENU_CREDITS: currentScene = SCENE_CREDITS;
           default: choice = min_choice = max_choice = -67; // ahahahah...
@@ -118,14 +120,18 @@ void loop() {
             currentScene = SCENE_NONE;
             play_multip_rps();
             break;
+          case GAME_MULTIP_PING_PONG:
+            currentScene = SCENE_NONE;
+            play_multip_ping_pong();
+            break;
         }
         break;
       default:;
     }
   }
 
-  lastButton = currentButton;
-  delay(50);
+    lastButton = currentButton;
+    delay(50);
 }
 
 // vim:shiftwidth=2

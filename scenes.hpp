@@ -1,7 +1,8 @@
 #ifndef SCENES_HPP
 #define SCENES_HPP
 
-enum Scenes {
+enum Scenes
+{
     SCENE_NONE = 0,
     SCENE_MAIN_MENU,
     SCENE_SINGLEP_GAMES,
@@ -9,21 +10,25 @@ enum Scenes {
     SCENE_CREDITS,
 };
 
-enum ScenesMainMenu {
+enum ScenesMainMenu
+{
     SCENE_MAIN_MENU_NONE = 10,
     SCENE_MAIN_MENU_SINGLEP,
     SCENE_MAIN_MENU_MULTIP,
     SCENE_MAIN_MENU_CREDITS,
 };
 
-enum selectedSinglePGame {
+enum selectedSinglePGame
+{
     GAME_SINGLEP_NONE = 20,
     GAME_SINGLEP_RPS,
 };
 
-enum selectedMultiPGame {
+enum selectedMultiPGame
+{
     GAME_MULTIP_NONE = 300,
     GAME_MULTIP_RPS,
+    GAME_MULTIP_PING_PONG,
 };
 
 inline int currentScene = SCENE_MAIN_MENU;
