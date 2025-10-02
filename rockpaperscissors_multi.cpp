@@ -111,56 +111,58 @@ static int lastButton    = NONE;
 
 void play_multip_rps()
 {
-    Moves player1_move = NONE, player2_move = NONE;
-
     while (true)
     {
-        currentButton = get_current_button();
-        if (currentButton != RBLUE_BUTTON_PIN)
+        Moves player1_move = NONE, player2_move = NONE;
+
+        while (true)
         {
-            switch (currentButton)
+            currentButton = get_current_button();
+            if (currentButton != RBLUE_BUTTON_PIN)
             {
-                case LWHITE_BUTTON_PIN: player1_move = ROCK; break;
-                case LRED_BUTTON_PIN:   player1_move = PAPER; break;
-                case RRED_BUTTON_PIN:   player1_move = SCISSORS; break;
+                switch (currentButton)
+                {
+                    case LWHITE_BUTTON_PIN: player1_move = ROCK; break;
+                    case LRED_BUTTON_PIN:   player1_move = PAPER; break;
+                    case RRED_BUTTON_PIN:   player1_move = SCISSORS; break;
+                }
             }
-        }
-        else if (currentButton == RBLUE_BUTTON_PIN && player1_move != NONE)
-        {
-            break;
-        }
-        print_player_moves(true, player1_move);
-        lastButton = currentButton;
-    }
-
-    lastButton = currentButton = NONE;
-
-    while (true)
-    {
-        currentButton = get_current_button();
-        if (currentButton != RBLUE_BUTTON_PIN)
-        {
-            switch (currentButton)
+            else if (currentButton == RBLUE_BUTTON_PIN && player1_move != NONE)
             {
-                case LWHITE_BUTTON_PIN: player2_move = ROCK; break;
-                case LRED_BUTTON_PIN:   player2_move = PAPER; break;
-                case RRED_BUTTON_PIN:   player2_move = SCISSORS; break;
+                break;
             }
+            print_player_moves(true, player1_move);
+            lastButton = currentButton;
         }
-        else if (currentButton == RBLUE_BUTTON_PIN && player2_move != NONE)
-        {
-            break;
-        }
-        print_player_moves(false, player2_move);
-        lastButton = currentButton;
-    }
 
-    print_count_down(3);
-    print_count_down(2);
-    print_count_down(1);
-    Winner winner = calculate_winner(player1_move, player2_move);
-    print_moves(player1_move, player2_move);
-    print_winner(winner);
-    lastButton = currentButton = NONE;
-    play_multip_rps();
+        lastButton = currentButton = NONE;
+
+        while (true)
+        {
+            currentButton = get_current_button();
+            if (currentButton != RBLUE_BUTTON_PIN)
+            {
+                switch (currentButton)
+                {
+                    case LWHITE_BUTTON_PIN: player2_move = ROCK; break;
+                    case LRED_BUTTON_PIN:   player2_move = PAPER; break;
+                    case RRED_BUTTON_PIN:   player2_move = SCISSORS; break;
+                }
+            }
+            else if (currentButton == RBLUE_BUTTON_PIN && player2_move != NONE)
+            {
+                break;
+            }
+            print_player_moves(false, player2_move);
+            lastButton = currentButton;
+        }
+
+        print_count_down(3);
+        print_count_down(2);
+        print_count_down(1);
+        Winner winner = calculate_winner(player1_move, player2_move);
+        print_moves(player1_move, player2_move);
+        print_winner(winner);
+        lastButton = currentButton = NONE;
+    }
 }

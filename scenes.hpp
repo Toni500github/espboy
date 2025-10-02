@@ -33,8 +33,8 @@ enum selectedMultiPGame
 
 inline int currentScene = SCENE_MAIN_MENU;
 
-void load_scene(int scene, int game);
-void load_scene_main_menu(int choice);
+void load_scene(const int& scene, const int& game);
+void load_scene_main_menu(const int& choice);
 void load_scene_game_credits();
 
 #endif

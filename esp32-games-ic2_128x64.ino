@@ -131,7 +131,7 @@ void loop()
   }
 
     lastButton = currentButton;
-    delay(50);
+    delay(150);
 }
 
 // vim:shiftwidth=2

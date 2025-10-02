@@ -19,7 +19,13 @@ const unsigned char scissors_icon_Bitmap[] PROGMEM = {
     0x02, 0x00, 0x03, 0x80, 0x02, 0x80, 0x03, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-static void load_scene_game(int game)
+const unsigned char ping_pong_Bitmap [] PROGMEM = {
+    // 'pixil-frame-0 (3)', 16x16px
+    0x00, 0x00, 0x00, 0x00, 0x1b, 0xc0, 0x3b, 0xe0, 0x33, 0xf0, 0x07, 0xf0, 0x0f, 0xf0, 0x0f, 0xf0, 
+    0x00, 0x00, 0x03, 0xc0, 0x01, 0x80, 0x01, 0x80, 0x01, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
+static void load_scene_game(const int& game)
 {
     display.clearDisplay();
     display.setTextSize(1);
@@ -39,7 +45,7 @@ static void load_scene_game(int game)
             break;
         case GAME_MULTIP_PING_PONG:
             centerText("Ping Pong", 10);
-            centerText("Ping Pong", 35);
+            display.drawBitmap(55, 32, ping_pong_Bitmap, 16, 16, SSD1306_WHITE);
             break;
         default:;
     }
@@ -62,7 +68,7 @@ void load_scene_game_credits()
     display.display();
 }
 
-void load_scene_main_menu(int choice)
+void load_scene_main_menu(const int& choice)
 {
     display.clearDisplay();
     display.setTextSize(1);
@@ -77,7 +83,7 @@ void load_scene_main_menu(int choice)
     display.display();
 }
 
-void load_scene(int scene, int game)
+void load_scene(const int& scene, const int& game)
 {
     switch (scene)
     {

@@ -120,35 +120,37 @@ static int lastButton    = NONE;
 
 void play_singlep_rps()
 {
-    Moves player_move = NONE;
-
     while (true)
     {
-        currentButton = get_current_button();
-        if (currentButton != RBLUE_BUTTON_PIN)
-        {
-            switch (currentButton)
-            {
-                case LWHITE_BUTTON_PIN: player_move = ROCK; break;
-                case LRED_BUTTON_PIN:   player_move = PAPER; break;
-                case RRED_BUTTON_PIN:   player_move = SCISSORS; break;
-            }
-        }
-        else if (currentButton == RBLUE_BUTTON_PIN && player_move != NONE)
-        {
-            break;
-        }
-        print_player_moves(player_move);
-        lastButton = currentButton;
-    }
+        Moves player_move = NONE;
 
-    Moves computer_move = get_cpu_move();
-    print_count_down(3);
-    print_count_down(2);
-    print_count_down(1);
-    Winner winner = calculate_winner(computer_move, player_move);
-    print_moves(computer_move, player_move);
-    print_winner(winner);
-    lastButton = currentButton = NONE;
-    play_singlep_rps();
+        while (true)
+        {
+            currentButton = get_current_button();
+            if (currentButton != RBLUE_BUTTON_PIN)
+            {
+                switch (currentButton)
+                {
+                    case LWHITE_BUTTON_PIN: player_move = ROCK; break;
+                    case LRED_BUTTON_PIN:   player_move = PAPER; break;
+                    case RRED_BUTTON_PIN:   player_move = SCISSORS; break;
+                }
+            }
+            else if (currentButton == RBLUE_BUTTON_PIN && player_move != NONE)
+            {
+                break;
+            }
+            print_player_moves(player_move);
+            lastButton = currentButton;
+        }
+
+        Moves computer_move = get_cpu_move();
+        print_count_down(3);
+        print_count_down(2);
+        print_count_down(1);
+        Winner winner = calculate_winner(computer_move, player_move);
+        print_moves(computer_move, player_move);
+        print_winner(winner);
+        lastButton = currentButton = NONE;
+    }
 }

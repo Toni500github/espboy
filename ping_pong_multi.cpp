@@ -22,27 +22,21 @@ void drawGame()
 {
     display.clearDisplay();
 
-    // Draw center line
     for (int y = 0; y < SCREEN_HEIGHT; y += 4)
         display.drawPixel(SCREEN_WIDTH / 2, y, SSD1306_WHITE);
 
-    // Draw paddles
     display.fillRect(PADDLE_MARGIN, paddleLeftY, PADDLE_WIDTH, PADDLE_HEIGHT, SSD1306_WHITE);
     display.fillRect(SCREEN_WIDTH - PADDLE_MARGIN - PADDLE_WIDTH, paddleRightY, PADDLE_WIDTH, PADDLE_HEIGHT,
                      SSD1306_WHITE);
 
-    // Draw ball
     display.fillRect(ballX, ballY, BALL_SIZE, BALL_SIZE, SSD1306_WHITE);
 
-    // Draw scores
     display.setTextSize(2);
     display.setTextColor(SSD1306_WHITE);
 
-    // Left score
     display.setCursor(SCREEN_WIDTH / 4 - 10, 5);
     display.println(leftScore);
 
-    // Right score
     display.setCursor(3 * SCREEN_WIDTH / 4 - 10, 5);
     display.println(rightScore);
 
@@ -79,14 +73,12 @@ void resetBall()
     ballSpeedX = (ballSpeedX > 0) ? -3 : 3;  // Alternate direction
     ballSpeedY = random(-2, 5);              // Random vertical speed
 
-    // Show score briefly
     drawGame();
     delay(1000);
 }
 
 void updateGame()
 {
-    // Move ball
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
@@ -115,13 +107,9 @@ void updateGame()
 
         // Small random adjustment to prevent repetitive patterns
         if (abs(ballSpeedY) < 1)
-        {                                 // If ball is moving too horizontally
-            ballSpeedY += random(-2, 3);  // Add more randomness
-        }
+            ballSpeedY += random(-2, 3);
         else
-        {
-            ballSpeedY += random(-1, 2);  // Small adjustment
-        }
+            ballSpeedY += random(-1, 2);
 
         // Constrain speed to prevent too vertical movement
         ballSpeedY = constrain(ballSpeedY, -4, 4);
@@ -137,24 +125,15 @@ void updateGame()
     {
         ballSpeedX = -abs(ballSpeedX);  // Move left
 
-        // Add randomness to Y direction when hitting paddle
         int hitPos = ballY - paddleRightY;
         ballSpeedY = map(hitPos, 0, PADDLE_HEIGHT, -3, 3);
 
-        // Small random adjustment to prevent repetitive patterns
         if (abs(ballSpeedY) < 1)
-        {                                 // If ball is moving too horizontally
-            ballSpeedY += random(-2, 3);  // Add more randomness
-        }
+            ballSpeedY += random(-2, 3);
         else
-        {
-            ballSpeedY += random(-1, 2);  // Small adjustment
-        }
+            ballSpeedY += random(-1, 2);
 
-        // Constrain speed to prevent too vertical movement
         ballSpeedY = constrain(ballSpeedY, -4, 4);
-
-        // Ensure minimum X speed
         ballSpeedX = -max(abs(ballSpeedX), 2);
     }
 
@@ -172,12 +151,14 @@ void updateGame()
 
     // Occasionally add very small random Y movement during normal play
     // This prevents perfectly horizontal ball movement
+    // 1% chance each frame
     if (random(0, 500) < 5)
-    {  // 1% chance each frame
+    {
         ballSpeedY += random(-1, 2);
         ballSpeedY = constrain(ballSpeedY, -4, 4);
     }
 }
+
 static int currentButton = 0;
 
 void play_multip_ping_pong()
