@@ -29,6 +29,7 @@ enum selectedMultiPGame
     GAME_MULTIP_NONE = 300,
     GAME_MULTIP_RPS,
     GAME_MULTIP_PING_PONG,
+    GAME_MULTIP_TTT,
 };
 
 inline int currentScene = SCENE_MAIN_MENU;

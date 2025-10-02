@@ -98,7 +98,7 @@ void loop()
             currentScene = SCENE_MULTIP_GAMES;
             choice = GAME_MULTIP_RPS;
             min_choice = GAME_MULTIP_RPS;
-            max_choice = GAME_MULTIP_PING_PONG;
+            max_choice = GAME_MULTIP_TTT;
             break;
           case SCENE_MAIN_MENU_CREDITS: currentScene = SCENE_CREDITS;
           default: choice = min_choice = max_choice = -67; // ahahahah...
