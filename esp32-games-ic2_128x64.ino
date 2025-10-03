@@ -19,6 +19,7 @@ static int max_choice = SCENE_MAIN_MENU_CREDITS;
 void play_singlep_rps();
 void play_multip_rps();
 void play_multip_ping_pong();
+void play_multip_ttt();
 
 int get_current_button()
 {
@@ -123,6 +124,10 @@ void loop()
           case GAME_MULTIP_PING_PONG:
             currentScene = SCENE_NONE;
             play_multip_ping_pong();
+            break;
+          case GAME_MULTIP_TTT:
+            currentScene = SCENE_NONE;
+            play_multip_ttt();
             break;
         }
         break;

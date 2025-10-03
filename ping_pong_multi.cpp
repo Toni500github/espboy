@@ -143,7 +143,7 @@ void updateGame()
         rightScore++;
         resetBall();
     }
-    if (ballX > SCREEN_WIDTH)
+    else if (ballX > SCREEN_WIDTH)
     {
         leftScore++;
         resetBall();
